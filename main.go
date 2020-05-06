@@ -9,14 +9,12 @@ import (
 )
 
 var (
-	winWidth = 800
+	winWidth  = 800
 	winHeight = 600
-	speed = 10
+	speed     = 10
 	blockSize = 10
-	random = rand.New(rand.NewSource(time.Now().Unix()))
+	random    = rand.New(rand.NewSource(time.Now().Unix()))
 )
-
-
 
 func main() {
 	err := sdl.Init(sdl.INIT_EVERYTHING)
@@ -26,7 +24,7 @@ func main() {
 	defer sdl.Quit()
 
 	window, err := sdl.CreateWindow(
-		"PONG",
+		"Snake",
 		sdl.WINDOWPOS_CENTERED,
 		sdl.WINDOWPOS_CENTERED,
 		int32(winWidth),
@@ -85,33 +83,33 @@ func main() {
 	}
 	defer fruitTex.Destroy()
 
-	fruitPixels := make([]byte, fruitRect.H * fruitRect.W * 4)
-	for y := 1; y < int(fruitRect.H) - 1; y++ {
-		for x := 1; x < int(fruitRect.W) - 1; x++ {
-			i := (y * int(fruitRect.W) + x) * 4
-			fruitPixels[i]     = 255
-			fruitPixels[i + 1] = 0
-			fruitPixels[i + 2] = 0
-			fruitPixels[i + 3] = 255
+	fruitPixels := make([]byte, fruitRect.H*fruitRect.W*4)
+	for y := 1; y < int(fruitRect.H)-1; y++ {
+		for x := 1; x < int(fruitRect.W)-1; x++ {
+			i := (y*int(fruitRect.W) + x) * 4
+			fruitPixels[i] = 255
+			fruitPixels[i+1] = 0
+			fruitPixels[i+2] = 0
+			fruitPixels[i+3] = 255
 		}
 	}
-	fruitTex.Update(nil, fruitPixels, int(fruitRect.W) * 4)
+	fruitTex.Update(nil, fruitPixels, int(fruitRect.W)*4)
 
-	snakePixels := make([]byte, snakeRect.H * snakeRect.W * 4)
-	for y := 1; y < int(snakeRect.H) - 1; y++ {
-		for x := 1; x < int(snakeRect.W) - 1; x++ {
-			i := (y * int(snakeRect.W) + x) * 4
-			snakePixels[i]     = 255
-			snakePixels[i + 1] = 255
-			snakePixels[i + 2] = 255
-			snakePixels[i + 3] = 255
+	snakePixels := make([]byte, snakeRect.H*snakeRect.W*4)
+	for y := 1; y < int(snakeRect.H)-1; y++ {
+		for x := 1; x < int(snakeRect.W)-1; x++ {
+			i := (y*int(snakeRect.W) + x) * 4
+			snakePixels[i] = 255
+			snakePixels[i+1] = 255
+			snakePixels[i+2] = 255
+			snakePixels[i+3] = 255
 		}
 	}
-	snakeTex.Update(nil, snakePixels, int(snakeRect.W) * 4)
+	snakeTex.Update(nil, snakePixels, int(snakeRect.W)*4)
 
 	keyState := sdl.GetKeyboardState()
 	pixels := make([]byte, winHeight*winWidth*4)
-	background.Update(nil, pixels, winWidth * 4)
+	background.Update(nil, pixels, winWidth*4)
 	renderer.Copy(background, nil, nil)
 
 	snake := &snakeBody{
@@ -126,7 +124,7 @@ func main() {
 		tex:  fruitTex,
 	}
 
-	fruit.newLoc(snake, winWidth - int(fruit.W), winHeight - int(fruit.H))
+	fruit.newLoc(snake, winWidth-int(fruit.W), winHeight-int(fruit.H))
 
 	snake.draw(renderer)
 	fruit.draw(renderer)
